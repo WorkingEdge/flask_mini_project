@@ -165,7 +165,8 @@ def add_category():
 
     categories = list(mongo.db.categories.find().sort("category_name", 1))
     return render_template("add_category.html", categories = categories)
-   
+
+
 
 
 
