@@ -25,6 +25,14 @@ def get_tasks():
     return render_template("tasks.html", tasks = tasks)
 
 
+@app.route("/search", methods = ["GET", "POST"])
+def search():
+    query = request.form.get("query")
+# Using the query variable values, perform a search on text elements:
+    tasks = list(mongo.db.tasks.find({"$text": {"$search": query}}))
+    return render_template("tasks.html", tasks = tasks)
+
+
 @app.route("/register", methods = ["GET", "POST"])
 def register():
     if request.method == "POST":
@@ -185,7 +193,7 @@ def edit_category(category_id):
 def delete_category(category_id):
     mongo.db.categories.remove({"_id": ObjectId(category_id)})
     flash("Category deeeeleted!")
-    return redirect(url_for('get_categories'))
+    return redirect(url_for('get_categories')) 
 
 
 if __name__ == "__main__":
